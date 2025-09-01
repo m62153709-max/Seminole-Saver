@@ -1,4 +1,9 @@
+"use client";
+import { useState } from "react";
+
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
   const deals = [
     {
       id: 1,
@@ -23,13 +28,19 @@ export default function Home() {
     },
   ];
 
+  // Filter logic
+  const filteredDeals =
+    selectedCategory === "All"
+      ? deals
+      : deals.filter((deal) => deal.category === selectedCategory);
+
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
       {/* Navbar */}
       <header className="bg-[#782F40] text-white p-4 shadow-md">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center justify-between">
           {/* Left: Logo + Title */}
-          <div className="flex items-center space-x-2 mb-2 md:mb-0">
+          <div className="flex items-center space-x-2">
             <img
               src="/piggy.png"
               alt="Seminole Saver Logo"
@@ -38,12 +49,26 @@ export default function Home() {
             <h1 className="text-2xl font-bold">Seminole Saver</h1>
           </div>
 
-          {/* Right: Button */}
-          <div className="flex justify-start md:justify-end">
+          {/* Right: Menu + Button */}
+          <div className="flex items-center space-x-4">
+            {/* Categories Dropdown */}
+            <select
+              className="bg-white text-black rounded px-2 py-1"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="All">All Deals</option>
+              <option value="Food">Food</option>
+              <option value="Clothing">Clothing</option>
+              <option value="Books">Books</option>
+            </select>
+
+            {/* Submit a Deal */}
             <a
               href="https://forms.gle/YOUR_FORM_LINK"
               target="_blank"
-              className="bg-[#C9973B] px-3 py-1 rounded text-black hover:bg-yellow-500"
+              className="bg-[#C9973B] text-sm px-2 py-1 rounded text-black hover:bg-yellow-500 
+                         md:text-base md:px-3 md:py-1"
             >
               Submit a Deal
             </a>
@@ -63,7 +88,7 @@ export default function Home() {
 
       {/* Deals */}
       <main className="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {deals.map((deal) => (
+        {filteredDeals.map((deal) => (
           <div
             key={deal.id}
             className="shadow-md border border-gray-200 rounded-2xl p-4"
@@ -82,7 +107,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-neutral-100 text-center py-4 text-gray-600 text-sm">
-        Built with ❤️ at FSU! ·{" "}
+        Built with ❤️ at FSU ·{" "}
         <a
           href="https://forms.gle/YOUR_FORM_LINK"
           target="_blank"
