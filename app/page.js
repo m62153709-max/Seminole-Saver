@@ -1,115 +1,104 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [deals, setDeals] = useState([]);
+  const [filter, setFilter] = useState("All Deals");
 
-  const deals = [
-    {
-      id: 1,
-      title: "Hungry Howie’s Student Special",
-      desc: "Large pizza + drink for $7.99 with FSU ID",
-      category: "Food",
-      expires: "Sept 15, 2025",
-    },
-    {
-      id: 2,
-      title: "Bill’s Bookstore Discount",
-      desc: "10% off all used textbooks for students",
-      category: "Books",
-      expires: "Sept 30, 2025",
-    },
-    {
-      id: 3,
-      title: "Garnet & Gold Apparel Sale",
-      desc: "Buy one, get one 50% off FSU shirts",
-      category: "Clothing",
-      expires: "Sept 20, 2025",
-    },
-  ];
+  useEffect(() => {
+    fetch("https://opensheet.elk.sh/1NQnbEvnkyCIGLJntli0_TdTodz8hIeAK0jk9aak9FFM/Sheet1")
+      .then((res) => res.json())
+      .then((data) => {
+        const cleaned = data.map((deal) => ({
+          Title: deal["Title"]?.trim(),
+          Description: deal["Description"]?.trim(),
+          Category: deal["Category"]?.trim(),
+          Expires: deal["Expires"]?.trim(),
+          Link: deal["Link"]?.trim(),
+        }));
+        setDeals(cleaned);
+      });
+  }, []);
 
-  // Filter logic
+  const categories = ["All Deals", ...new Set(deals.map((d) => d.Category))];
   const filteredDeals =
-    selectedCategory === "All"
+    filter === "All Deals"
       ? deals
-      : deals.filter((deal) => deal.category === selectedCategory);
+      : deals.filter((deal) => deal.Category === filter);
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col">
+    <div className="bg-gray-50 min-h-screen flex flex-col">
       {/* Navbar */}
-      <header className="bg-[#782F40] text-white p-4 shadow-md">
-        <div className="flex items-center justify-between">
-          {/* Left: Logo + Title */}
-          <div className="flex items-center space-x-2">
-            <img
-              src="/piggy.png"
-              alt="Seminole Saver Logo"
-              className="h-12 w-12"
-            />
-            <h1 className="text-2xl font-bold">Seminole Saver</h1>
-          </div>
-
-          {/* Right: Menu + Button */}
-          <div className="flex items-center space-x-4">
-            {/* Categories Dropdown */}
-            <select
-              className="bg-white text-black rounded px-2 py-1"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="All">All Deals</option>
-              <option value="Food">Food</option>
-              <option value="Clothing">Clothing</option>
-              <option value="Books">Books</option>
-            </select>
-
-            {/* Submit a Deal */}
-            <a
-              href="https://forms.gle/YOUR_FORM_LINK"
-              target="_blank"
-              className="bg-[#C9973B] text-sm px-2 py-1 rounded text-black hover:bg-yellow-500 
-                         md:text-base md:px-3 md:py-1"
-            >
+      <header className="bg-[#782F40] text-white flex justify-between items-center p-4">
+        <div className="flex items-center space-x-2">
+          <img src="/piggy.png" alt="Logo" className="h-8 w-8 md:h-10 md:w-10" />
+          <h1 className="text-lg md:text-2xl font-bold">Seminole Saver</h1>
+        </div>
+        <div className="flex space-x-2">
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="text-black rounded px-2 py-1"
+          >
+            {categories.map((cat) => (
+              <option key={cat}>{cat}</option>
+            ))}
+          </select>
+          <a
+            href="https://forms.gle/713A5p3w9i75DTQb9"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="bg-[#CEB888] text-black px-3 py-1 rounded hover:bg-yellow-600">
               Submit a Deal
-            </a>
-          </div>
+            </button>
+          </a>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="text-center py-10 bg-white shadow-sm">
-        <h2 className="text-3xl font-bold text-[#782F40] mb-2">
+      <main className="p-6 flex-grow">
+        <h2 className="text-center text-2xl md:text-3xl font-bold text-[#782F40] mb-2">
           Save Smarter at FSU
         </h2>
-        <p className="text-gray-600 max-w-xl mx-auto">
+        <p className="text-center text-gray-600 mb-6">
           Discover the best student discounts and local deals in Tallahassee.
         </p>
-      </section>
 
-      {/* Deals */}
-      <main className="flex-1 p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredDeals.map((deal) => (
-          <div
-            key={deal.id}
-            className="shadow-md border border-gray-200 rounded-2xl p-4"
-          >
-            <h3 className="text-xl font-bold text-[#782F40] mb-1">
-              {deal.title}
-            </h3>
-            <p className="text-gray-700 mb-2">{deal.desc}</p>
-            <div className="flex justify-between text-sm text-gray-500">
-              <span>{deal.category}</span>
-              <span>Expires: {deal.expires}</span>
-            </div>
-          </div>
-        ))}
+        {/* Deals */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {filteredDeals.map((deal, idx) => (
+            <a
+              key={idx}
+              href={deal.Link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block p-6 bg-white rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition"
+            >
+              <h3 className="font-bold text-[#782F40] text-lg mb-1">
+                {deal.Title}
+              </h3>
+              <p className="text-gray-700 mb-3">{deal.Description}</p>
+              <div className="flex justify-between items-center text-sm text-gray-500">
+                <span className="italic">{deal.Category}</span>
+                {deal.Expires === "Ongoing" ? (
+                  <span className="bg-[#CEB888] text-[#782F40] px-2 py-0.5 rounded-full text-xs font-semibold">
+                    Ongoing
+                  </span>
+                ) : (
+                  <span className="text-gray-600">Expires: {deal.Expires}</span>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
       </main>
 
       {/* Footer */}
       <footer className="bg-neutral-100 text-center py-4 text-gray-600 text-sm">
         Built with ❤️ at FSU ·{" "}
         <a
-          href="https://forms.gle/YOUR_FORM_LINK"
+          href="https://forms.gle/713A5p3w9i75DTQb9"
           target="_blank"
           className="text-[#782F40] underline"
         >
