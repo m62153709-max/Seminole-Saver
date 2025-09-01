@@ -26,18 +26,29 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
       {/* Navbar */}
-      <header className="bg-[#782F40] text-white p-4 shadow-md flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <img src="/piggy.png" alt="Seminole Saver Logo" className="h-12 w-12" />
-          <h1 className="text-2xl font-bold">Seminole Saver</h1>
+      <header className="bg-[#782F40] text-white p-4 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+          {/* Left: Logo + Title */}
+          <div className="flex items-center space-x-2 mb-2 md:mb-0">
+            <img
+              src="/piggy.png"
+              alt="Seminole Saver Logo"
+              className="h-12 w-12"
+            />
+            <h1 className="text-2xl font-bold">Seminole Saver</h1>
+          </div>
+
+          {/* Right: Button */}
+          <div className="flex justify-start md:justify-end">
+            <a
+              href="https://forms.gle/YOUR_FORM_LINK"
+              target="_blank"
+              className="bg-[#C9973B] px-3 py-1 rounded text-black hover:bg-yellow-500"
+            >
+              Submit a Deal
+            </a>
+          </div>
         </div>
-        <a
-          href="https://forms.gle/YOUR_FORM_LINK"
-          target="_blank"
-          className="bg-[#C9973B] px-3 py-1 rounded text-black hover:bg-yellow-500"
-        >
-          Submit a Deal
-        </a>
       </header>
 
       {/* Hero */}
@@ -71,7 +82,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-neutral-100 text-center py-4 text-gray-600 text-sm">
-        Built with ❤️ at FSU ·{" "}
+        Built with ❤️ at FSU! ·{" "}
         <a
           href="https://forms.gle/YOUR_FORM_LINK"
           target="_blank"
