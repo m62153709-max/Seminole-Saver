@@ -35,10 +35,11 @@ export default function Home() {
           <h1 className="text-lg md:text-2xl font-bold">Seminole Saver</h1>
         </div>
         <div className="flex space-x-2">
+          {/* Styled Category Dropdown */}
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="text-black rounded px-2 py-1"
+            className="bg-white text-gray-700 px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#782F40] focus:border-[#782F40]"
           >
             {categories.map((cat) => (
               <option key={cat}>{cat}</option>
@@ -49,7 +50,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="bg-[#CEB888] text-black px-3 py-1 rounded hover:bg-yellow-600">
+            <button className="bg-[#CEB888] text-black px-3 py-2 rounded-md shadow-sm hover:bg-yellow-600">
               Submit a Deal
             </button>
           </a>
