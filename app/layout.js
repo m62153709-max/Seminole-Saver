@@ -1,20 +1,17 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react"; // ✅ Added this line
-
-const inter = Inter({ subsets: ["latin"] });
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Seminole Saver",
-  description: "Save smarter at FSU – student discounts and deals in Tallahassee",
+  description: "Save smarter at FSU",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         {children}
-        <Analytics /> {/* ✅ This activates Vercel Analytics */}
+        <Analytics /> {/* 👈 Required for tracking */}
       </body>
     </html>
   );
