@@ -97,7 +97,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-neutral-100 text-center py-4 text-gray-600 text-sm">
-        Built with ❤️ at FSU ·{" "}
+        Built at FSU for FSU ·{" "}
         <a
           href="https://forms.gle/713A5p3w9i75DTQb9"
           target="_blank"
